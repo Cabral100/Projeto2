@@ -141,3 +141,47 @@ int debito(ListaDeClientes *lc) {
 
     return 0;
 }
+
+int deposito(ListaDeClientes *lc) {
+    char cpf[12];
+    int senha;
+    float valor;
+    char descricao[100];
+
+    printf("Digite o seu CPF: ");
+    scanf("%s", cpf);
+
+    printf("Digite a sua senha: ");
+    scanf("%d", &senha);
+
+
+    int clientee = 0;
+    int clientenum = -1;
+
+    for (int i = 0; i < lc->qtd; i++) {
+        if (strcmp(lc->clientes[i].cpf, cpf) == 0 && lc->clientes[i].senha == senha) {
+            clientee = 1;
+            clientenum = i;
+            break;
+        }
+    }
+
+    if (clientee) {
+        printf("Cliente encontrado , o seu saldo atual eh de %.2f\n", lc->clientes[ clientenum].valorinicial);
+        printf("Digite o valor a ser depositado: ");
+        scanf("%f", &valor);
+        printf("Qual o motivo da operacao? ");
+        scanf("%s", &descricao);
+
+        lc->clientes[clientenum].valorinicial += valor;
+        printf("Deposito realizado com sucesso , o seu saldo atualizado eh: %.2f\n", lc->clientes[ clientenum].valorinicial);
+        lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].valor = valor;
+        strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].operacao, "Deposito");
+        strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].descricao, descricao);
+        lc->clientes[clientenum].qtde += 1;
+    } else {
+        printf("Algo deu errado , portanto , nao foi possivel realizar o debito!\n");
+    }
+
+    return 0;
+}
