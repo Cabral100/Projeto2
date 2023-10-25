@@ -141,3 +141,54 @@ int debito(ListaDeClientes *lc) {
 
     return 0;
 }
+
+int extrato(ListaDeClientes lc) {
+    char cpf[12];
+    int senha;
+
+    printf("Digite o seu CPF: ");
+    scanf("%s", cpf);
+
+    printf("Digite a sua senha: ");
+    scanf("%d", &senha);
+
+    int clientee = 0;
+    int clientenum = -1;
+
+    // Procurar o cliente com o CPF e senha correspondentes
+    for (int i = 0; i < lc.qtd; i++) {
+        if (strcmp(lc.clientes[i].cpf, cpf) == 0 && lc.clientes[i].senha == senha) {
+            clientee = 1;
+            clientenum = i;
+            break;
+        }
+    }
+
+    if (clientee) {
+        FILE *extrato = fopen("extrato.txt", "w");
+        if (extrato == NULL) {
+            printf("Erro ao gerar o extrato.\n");
+            return 1;
+        }
+
+        fprintf(extrato, "Extrato do cliente: %s\n", lc.clientes[clientenum].nome);
+        fprintf(extrato, "CPF: %s\n", lc.clientes[clientenum].cpf);
+        fprintf(extrato, "Tipo de conta: %s\n", lc.clientes[clientenum].conta);
+        fprintf(extrato, "Saldo atual: %.2f\n", lc.clientes[clientenum].valorinicial);
+
+        for(int i = 0; i < lc.clientes[clientenum].qtde; i++){
+            fprintf(extrato, "Descricao: %s\n", lc.clientes[clientenum].extratos[i].descricao);
+            fprintf(extrato, "Valor: %d\n", lc.clientes[clientenum].extratos[i].valor);
+            fprintf(extrato, "Operacao: %s\n", lc.clientes[clientenum].extratos[i].operacao);
+        }
+
+        // Fecha o arquivo de extrato
+        fclose(extrato);
+
+        printf("Extrato gerado com sucesso\n");
+    } else {
+        printf("Nao foi possivel gerar o extrato!\n");
+    }
+
+    return 0;
+}
