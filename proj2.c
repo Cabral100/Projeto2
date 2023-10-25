@@ -320,3 +320,17 @@ int salvarLista(ListaDeClientes lc, char nome[]){
     return 0;
 
 }
+
+//A funcao carrega os itens do arquivo e passa para a struct do programa
+int carregarLista(ListaDeClientes *lc, char nome[]){
+    FILE *arquivo = fopen(nome, "rb");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    fread(lc, sizeof(ListaDeClientes), 1, arquivo);
+    fclose(arquivo);
+    return 0;
+};
