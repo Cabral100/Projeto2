@@ -41,22 +41,3 @@ int novoCliente(ListaDeClientes *lc ) {
 
     return 0;
 }
-
-int deletarCliente(ListaDeClientes *lc){
-    int opcao;
-    printf("Qual cliente deseja deletar? ");
-    scanf("%d", &opcao);
-    if (opcao > lc->qtd) {
-        printf("Numero invalido.\n");
-        return 1;
-    }
-
-    for(int i = opcao - 1 ; i < lc->qtd -1 ; i++ ){
-        lc->clientes[i] = lc->clientes[i+1];
-    }
-
-    lc->qtd--;
-
-    printf("Cliente %d excluida com sucesso!\n", opcao);
-    return 0;
-};
