@@ -72,3 +72,72 @@ int listarClientes(ListaDeClientes lc){
     }
     return 0;
 }
+
+int debito(ListaDeClientes *lc) {
+    char cpf[12];
+    int senha;
+    float valor;
+    char descricao[100];
+
+    printf("Digite o seu CPF: ");
+    scanf("%s", cpf);
+
+    printf("Digite a sua senha: ");
+    scanf("%d", &senha);
+
+    int clientee = 0;
+    int clientenum = -1;
+
+    // Procurar o cliente com o CPF e senha correspondentes
+    for (int i = 0; i < lc->qtd; i++) {
+        if (strcmp(lc->clientes[i].cpf, cpf) == 0 && lc->clientes[i].senha == senha) {
+            clientee = 1;
+            clientenum = i;
+            break;
+        }
+    }
+
+    if (clientee) {
+        printf("Digite o valor a ser debitado: ");
+        scanf("%f", &valor);
+
+        printf("Qual o motivo da operacao? ");
+        scanf("%s", descricao);
+
+        // Verificar o tipo de conta e aplicar as regras de débito
+        if (strcmp(lc->clientes[clientenum].conta, "comum" ) == 0) {
+            // Conta comum
+            float limneg = -1000.0;
+            if (lc->clientes[clientenum].valorinicial - valor >= limneg) {
+                lc->clientes[clientenum].valorinicial -= valor * 1.05; // Cobrança da taxa (5%)
+                printf("Debito realizado com sucesso , o seu saldo atualizado eh: %.2f\n", lc->clientes[clientenum].valorinicial);
+                lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].valor = valor * 1.05;
+                strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].operacao, "Debito");
+                strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].descricao, descricao);
+                lc->clientes[clientenum].qtde += 1;
+            } else {
+                printf("Saldo insuficiente para realizar o debito.\n");
+            }
+        } else if (strcmp(lc->clientes[clientenum].conta, "plus") == 0) {
+            // Conta plus
+            float limneg = -5000.0;
+            if (lc->clientes[clientenum].valorinicial - valor >= limneg) {
+                lc->clientes[clientenum].valorinicial -= valor * 1.03; // Cobrança da taxa (3%)
+                printf("Debito realizado com sucesso , o seu saldo atualizado eh: %.2f\n", lc->clientes[clientenum].valorinicial);
+                lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].valor = valor * 1.03;
+                strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].operacao, "Debito");
+                strcpy(lc->clientes[clientenum].extratos[lc->clientes[clientenum].qtde].descricao, descricao);
+                lc->clientes[clientenum].qtde += 1;
+            } else {
+                printf("Saldo insuficiente para efetuar o debito.\n");
+            }
+        } else {
+            printf("Tipo de conta invalido.\n");
+        }
+    } else {
+        printf("Algo deu errado , portanto , nao foi possivel realizar o debito!\n");
+    }
+
+
+    return 0;
+}
