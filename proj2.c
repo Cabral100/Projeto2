@@ -306,3 +306,17 @@ int extrato(ListaDeClientes lc) {
 
     return 0;
 }
+
+int salvarLista(ListaDeClientes lc, char nome[]){
+    FILE *arquivo = fopen(nome, "wb");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    fwrite(&lc, sizeof(ListaDeClientes), 1, arquivo);
+    fclose(arquivo);
+    return 0;
+
+}
