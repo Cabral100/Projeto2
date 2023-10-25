@@ -60,3 +60,15 @@ int deletarCliente(ListaDeClientes *lc){
     printf("Cliente %d excluida com sucesso!\n", opcao);
     return 0;
 };
+
+int listarClientes(ListaDeClientes lc){
+    for (int i = 0; i < lc.qtd; i++){
+        printf("Cliente %d:\n", i + 1);
+        printf("Nome: %s\n", lc.clientes[i].nome);
+        printf("CPF: %s\n", lc.clientes[i].cpf);
+        printf("Tipo de conta (comum ou plus): %s\n" , lc.clientes[i].conta);
+        printf("Saldo: %f\n" , lc.clientes[i].valorinicial);
+        printf("\n");
+    }
+    return 0;
+}
