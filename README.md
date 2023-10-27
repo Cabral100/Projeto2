@@ -23,3 +23,7 @@ No sistema e possível armazenar ate 1000 clientes e as informacoes das ultimas 
 ## Informacoes
 Todo o projeto foi desenvolvido utilizando a linguagem C.
 Os dados dos clientes sao armazenados em arquivo binario, e as informacoes do extrato sao salvas em um arquivo .txt.
+O projeto foi desenvolvido pelos alunos:
+* Guilherme Morais Escudeiro RA 24.123.005-1
+* Lucas Tonoli Cabral Duarte RA 24.123.032-5
+* Renan Casemiro Hessel RA 24.123.019-2
