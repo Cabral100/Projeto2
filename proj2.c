@@ -14,12 +14,14 @@ void printMenu(){
     printf("Digite a opcao que voce quer executar: ");
 };
 
+//Essa funçao cria um cliente
 int novoCliente(ListaDeClientes *lc ) {
+    //Se a quantidades de clientes for maior que 1000 , o programa impossibilita de criar mais usuarios
     if (lc->qtd >= 1000) {
         printf("Nao e possivel cadastrar mais clientes. Limite atingido.\n");
         return -1;
     }
-
+    //Pede informaçoes cruciais para criar um cliente
     printf("Nome: ");
     scanf(" %s", lc->clientes[lc->qtd].nome);
 
@@ -41,16 +43,17 @@ int novoCliente(ListaDeClientes *lc ) {
 
     return 0;
 }
-
+//Essa funçao deleta um cliente
 int deletarCliente(ListaDeClientes *lc){
     int opcao;
     printf("Qual cliente deseja deletar? ");
     scanf("%d", &opcao);
+    //Se a opçao for um numero que nao existe nao dara para deletar o cliente
     if (opcao > lc->qtd) {
         printf("Numero invalido.\n");
         return 1;
     }
-
+    //Cria um "for" para deletar o cliente ja criado na funçao "NovoCliente"
     for(int i = opcao - 1 ; i < lc->qtd -1 ; i++ ){
         lc->clientes[i] = lc->clientes[i+1];
     }
@@ -61,6 +64,7 @@ int deletarCliente(ListaDeClientes *lc){
     return 0;
 };
 
+//Lista todos os clientes existentes no programa
 int listarClientes(ListaDeClientes lc){
     for (int i = 0; i < lc.qtd; i++){
         printf("Cliente %d:\n", i + 1);
@@ -73,12 +77,14 @@ int listarClientes(ListaDeClientes lc){
     return 0;
 }
 
+//Realiza o debito , fazendo com que tambem respeite as leis de conta comum e plus
 int debito(ListaDeClientes *lc) {
     char cpf[12];
     int senha;
     float valor;
     char descricao[100];
-
+    
+    //Pede informaçoes para o cliente , para que essas sejam verificadas e que possa ocorrer o debito
     printf("Digite o seu CPF: ");
     scanf("%s", cpf);
 
@@ -97,6 +103,7 @@ int debito(ListaDeClientes *lc) {
         }
     }
 
+    //Se existir esse cliente , ira ocorrer o debito
     if (clientee) {
         printf("Digite o valor a ser debitado: ");
         scanf("%f", &valor);
@@ -142,12 +149,14 @@ int debito(ListaDeClientes *lc) {
     return 0;
 }
 
+//Essa funçao realiza o deposito
 int deposito(ListaDeClientes *lc) {
     char cpf[12];
     int senha;
     float valor;
     char descricao[100];
 
+    //Pedindo as informaçoes necessarias para que ocorra o deposito
     printf("Digite o seu CPF: ");
     scanf("%s", cpf);
 
@@ -158,6 +167,7 @@ int deposito(ListaDeClientes *lc) {
     int clientee = 0;
     int clientenum = -1;
 
+    //"For" para que ocorra o deposito corretamente
     for (int i = 0; i < lc->qtd; i++) {
         if (strcmp(lc->clientes[i].cpf, cpf) == 0 && lc->clientes[i].senha == senha) {
             clientee = 1;
@@ -166,6 +176,7 @@ int deposito(ListaDeClientes *lc) {
         }
     }
 
+    //Verifica se existe esse cliente para que ocorra esse deposito
     if (clientee) {
         printf("Cliente encontrado , o seu saldo atual eh de %.2f\n", lc->clientes[ clientenum].valorinicial);
         printf("Digite o valor a ser depositado: ");
@@ -186,6 +197,7 @@ int deposito(ListaDeClientes *lc) {
     return 0;
 }
 
+//Essa funçao realiza a transferencia entre contas ja existentes no programa
 int transferencia(ListaDeClientes *lc) {
     char cpfreme[12];
     int senhareme;
@@ -193,6 +205,7 @@ int transferencia(ListaDeClientes *lc) {
     float valor;
     char descricao[100];
 
+    //Aqui pedimos as informaçoes necesssarias para que possa ocorrer a transferencia
     printf("Digite o seu CPF : ");
     scanf("%s", cpfreme);
 
@@ -211,6 +224,7 @@ int transferencia(ListaDeClientes *lc) {
         }
     }
 
+    //Verifica qual conta o cliente deseja transferir 
     if (clienteremee) {
         printf("Digite o CPF da conta que voce quer  transferir: ");
         scanf("%s", cpfdesti);
@@ -226,7 +240,7 @@ int transferencia(ListaDeClientes *lc) {
                 break;
             }
         }
-
+        //Verifica se o cliente foi encontrado , possibilitando , assim , a transferencia entre as contas
         if (clientedestinae) {
             printf("Cliente destinatario encontrado , o seu saldo eh de %.2f\n", lc->clientes[clientedestinanum].valorinicial);
             printf("Digite o valor para a transferencia: ");
@@ -256,6 +270,8 @@ int transferencia(ListaDeClientes *lc) {
 
     return 0;
 }
+
+//Gera um extrato com as operaçoes realizadas pelo cliente
 int extrato(ListaDeClientes lc) {
     char cpf[12];
     int senha;
@@ -277,7 +293,7 @@ int extrato(ListaDeClientes lc) {
             break;
         }
     }
-
+    //Se existir cliente , cria um arquivo txt para escrever o extrato , com todas as operaçoes realizadas pelo usuario ja cadastrado
     if (clientee) {
         FILE *extrato = fopen("extrato.txt", "w");
         if (extrato == NULL) {
@@ -307,6 +323,7 @@ int extrato(ListaDeClientes lc) {
     return 0;
 }
 
+//Essa funçao salva os clientes
 int salvarLista(ListaDeClientes lc, char nome[]){
     FILE *arquivo = fopen(nome, "wb");
 
@@ -324,7 +341,7 @@ int salvarLista(ListaDeClientes lc, char nome[]){
 //A funcao carrega os itens do arquivo e passa para a struct do programa
 int carregarLista(ListaDeClientes *lc, char nome[]){
     FILE *arquivo = fopen(nome, "rb");
-
+    //Se o arquivo nao existir , nao vai dar para abrir o arquivo
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
