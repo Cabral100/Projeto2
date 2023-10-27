@@ -5,9 +5,9 @@ O projeto Banco QuemPoupaTem foi desenvolvido por alunos do curso de Ciencia da 
 ## Sistema do banco
 
 O sistema do banco possui dois tipos de contas:
-* comum
+* Comum
 Permite um saldo negativo de ate R$1000, e cobra uma taxa de 5% a cada debito realizado.
-* plus,
+* Plus
 Permite um saldo negativo de ate R$5000 e cobra uma taxa de 3% a cada debito realizado.
 No sistema e possível armazenar ate 1000 clientes e as informacoes das ultimas 100 operacoes realizadas pelo cliente.
 
